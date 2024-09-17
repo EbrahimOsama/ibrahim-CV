@@ -3,212 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ibrahim Osama - CV</title>
+    <title>Ibrahim Osama - Breakout CV</title>
     <style>
-        /* General styling */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #f8f9fa, #e9ecef);
-            color: #333;
+            background-color: #f4f4f4;
         }
-
-        header {
-            background-color: #4a90e2;
-            color: #fff;
-            text-align: center;
-            padding: 50px 0;
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: #333;
         }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin: 0;
-            opacity: 0;
-            animation: fadeInDown 1.5s ease-in-out forwards;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            opacity: 0;
-            animation: fadeInUp 2s ease-in-out forwards;
-        }
-
-        section {
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        section h2 {
-            font-size: 1.8rem;
-            color: #4a90e2;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #4a90e2;
-        }
-
-        .info {
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .info p {
-            margin: 5px 0;
-        }
-
-        .skills ul, .languages ul, .extracurricular ul, .competitions ul, .research ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin: 10px 0;
-            padding: 5px;
-            background: #e9ecef;
-            border-radius: 5px;
-            transition: transform 0.3s ease;
-        }
-
-        ul li:hover {
-            transform: scale(1.05);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #4a90e2;
+        #cv-section {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
-        }
-
-        /* Animation for header */
-        @keyframes fadeInDown {
-            0% {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Animation for container */
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Button styling */
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4a90e2;
-            color: white;
+            z-index: 999;
             text-align: center;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
+            padding: 20px;
+            overflow-y: scroll;
         }
-
-        .button:hover {
-            background-color: #357abd;
+        #cv-section h1 {
+            margin-top: 50px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4a90e2;
+            padding: 10px;
+            border: none;
+            color: white;
             cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Ibrahim Osama - STEM Student CV</h1>
-    </header>
 
-    <div class="container">
-        <section>
-            <h2>Contact Information</h2>
-            <div class="info">
-                <p><strong>Phone:</strong> +20120 573 4644</p>
-                <p><strong>Email:</strong> scientistibrahim2021@gmail.com</p>
-                <p><strong>Location:</strong> 11 Ain Shams, Cairo, Egypt</p>
-            </div>
-        </section>
+<!-- The Breakout Game Canvas -->
+<canvas id="myCanvas" width="800" height="500"></canvas>
 
-        <section class="skills">
-            <h2>Skills</h2>
-            <ul>
-                <li>Front End App Developer</li>
-                <li>Scientific Researcher</li>
-                <li>Problem-Solving</li>
-                <li>Critical Thinking</li>
-                <li>Project Management</li>
-                <li>Strong Communication</li>
-            </ul>
-        </section>
+<!-- The CV Section that zooms in when a brick is hit -->
+<div id="cv-section">
+    <button class="close-btn" onclick="closeSection()">Close</button>
+    <h1 id="section-title">Languages</h1>
+    <p id="section-details">Details of the selected section will go here...</p>
+</div>
 
-        <section class="languages">
-            <h2>Languages</h2>
-            <ul>
-                <li><strong>English:</strong> C1</li>
-                <li><strong>French:</strong> B1</li>
-                <li><strong>German:</strong> A1</li>
-                <li><strong>Turkish:</strong> A2</li>
-                <li><strong>Arabic:</strong> Native</li>
-            </ul>
-        </section>
+<script>
+// Variables for Breakout game
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+let ballRadius = 10;
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 2;
+let dy = -2;
+let paddleHeight = 10;
+let paddleWidth = 75;
+let paddleX = (canvas.width - paddleWidth) / 2;
+let rightPressed = false;
+let leftPressed = false;
 
-        <section class="extracurricular">
-            <h2>Extracurricular Activities</h2>
-            <ul>
-                <li><strong>Researcher:</strong> Electrical Engineering with Dr. Lofti (Zagazig University)</li>
-                <li><strong>SpanUP Founder:</strong> Developed attention-enhancing app</li>
-                <li><strong>Artist:</strong> Created 150+ portraits</li>
-                <li><strong>Scout Leader:</strong> Led 80+ Scouters in Egyptian Air Scouts</li>
-            </ul>
-        </section>
+// Bricks variables (representing sections of the CV)
+let brickRowCount = 3;
+let brickColumnCount = 5;
+let brickWidth = 100;
+let brickHeight = 20;
+let brickPadding = 10;
+let brickOffsetTop = 30;
+let brickOffsetLeft = 30;
+let bricks = [];
 
-        <section class="competitions">
-            <h2>Competitions</h2>
-            <ul>
-                <li><strong>Biology Olympiad:</strong> Gold Medal in Cellular and Molecular Biology</li>
-                <li><strong>EGSDC Competition:</strong> Designed moon colony</li>
-                <li><strong>NASA Space Apps Competition:</strong> 8th place with "Aqua" app</li>
-            </ul>
-        </section>
+for (let c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0, status: 1, section: "" };
+    }
+}
 
-        <section class="research">
-            <h2>Research Projects</h2>
-            <ul>
-                <li>Research on the effect of the SpanUP app</li>
-                <li>Research on social media's impact on neuroplasticity</li>
-                <li>Water turbine efficiency project</li>
-                <li>Generating electricity from walking</li>
-            </ul>
-        </section>
+// Titles for each section (you can edit this)
+const sections = ["Languages", "Honors", "Research Projects", "Experience", "Skills"];
 
-        <section>
-            <a class="button" href="#contact">Contact Me</a>
-        </section>
-    </div>
+// Setup key events for paddle control
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
 
-    <footer>
-        <p>&copy; 2024 Ibrahim Osama | All Rights Reserved</p>
-    </footer>
+function keyDownHandler(e) {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        rightPressed = true;
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        leftPressed = true;
+    }
+}
 
-    <script>
-        // Ensure the page loads and animations apply correctly
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelector('.container').style.opacity = "1";
-            document.querySelector('header h1').style.opacity = "1";
-        });
-    </script>
+function keyUpHandler(e) {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        rightPressed = false;
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        leftPressed = false;
+    }
+}
+
+// Ball and paddle movement
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+// Draw the bricks
+function drawBricks() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status === 1) {
+                const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
+// Collision detection to show CV section
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            let b = bricks[c][r];
+            if (b.status === 1) {
+                if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                    dy = -dy;
+                    b.status = 0; // Brick disappears
+                    openSection(sections[r % sections.length]); // Open the CV section
+                }
+            }
+        }
+    }
+}
+
+// Draw the game frame and handle movement
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    collisionDetection();
+
+    // Ball movement logic
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+    if (y + dy < ballRadius) {
+        dy = -dy;
+    } else if (y + dy > canvas.height - ballRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        } else {
+            document.location.reload();
+        }
+    }
+
+    if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        paddleX += 7;
+    } else if (leftPressed && paddleX > 0) {
+        paddleX -= 7;
+    }
+
+    x += dx;
+    y += dy;
+    requestAnimationFrame(draw);
+}
+
+// Open CV section when brick is hit
+function openSection(section) {
+    document.getElementById("cv-section").style.display = "block";
+    document.getElementById("section-title").textContent = section;
+    document.getElementById("section-details").textContent = `Details about ${section}...`; // Placeholder
+}
+
+// Close the zoomed-in CV section
+function closeSection() {
+    document.getElementById("cv-section").style.display = "none";
+}
+
+// Start the game
+draw();
+</script>
 </body>
 </html>
