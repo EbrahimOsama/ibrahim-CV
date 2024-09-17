@@ -15,15 +15,17 @@
             display: block;
             margin: 0 auto;
             background: #333;
+            width: 100vw;
+            height: 100vh;
         }
         #cv-section {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
             color: white;
             z-index: 999;
             text-align: center;
@@ -37,12 +39,13 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #4a90e2;
+            background-color: #ff5c5c;
             padding: 10px;
             border: none;
             color: white;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 50%;
+            font-size: 20px;
         }
         #photo {
             margin-top: 20px;
@@ -55,11 +58,11 @@
 <body>
 
 <!-- The Breakout Game Canvas -->
-<canvas id="myCanvas" width="800" height="500"></canvas>
+<canvas id="myCanvas"></canvas>
 
 <!-- The CV Section that zooms in when a brick is hit -->
 <div id="cv-section">
-    <button class="close-btn" onclick="closeSection()">Close</button>
+    <button class="close-btn" onclick="resumeGame()">X</button>
     <h1 id="section-title">Section Title</h1>
     <p id="section-details">Details of the selected section will go here...</p>
     <img id="photo" src="your-photo-url-here.jpg" alt="Ibrahim's Photo">
@@ -77,7 +80,7 @@ let dy = -2;
 let paddleHeight = 10;
 let paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
-let mouseX = paddleX;
+let gamePaused = false;
 let rightPressed = false;
 let leftPressed = false;
 
@@ -88,7 +91,11 @@ let brickWidth = 150;
 let brickHeight = 50;
 let brickPadding = 10;
 let brickOffsetTop = 30;
-let brickOffsetLeft = 30;
+let brickOffsetLeft = (canvas.width - (brickWidth * brickColumnCount + brickPadding * (brickColumnCount - 1))) / 2; // Center horizontally
+
+// Center vertically
+brickOffsetTop = (canvas.height - (brickHeight * brickRowCount + brickPadding * (brickRowCount - 1))) / 4;
+
 let bricks = [];
 
 // Sections corresponding to CV
@@ -153,7 +160,7 @@ function drawBricks() {
     }
 }
 
-// Collision detection to show CV section
+// Collision detection to show CV section and pause the game
 function collisionDetection() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
@@ -162,7 +169,7 @@ function collisionDetection() {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
                     b.status = 0; // Brick disappears
-                    openSection(b.section); // Open the CV section
+                    pauseGame(b.section); // Pause and show section
                 }
             }
         }
@@ -171,45 +178,71 @@ function collisionDetection() {
 
 // Draw the game frame and handle movement
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBricks();
-    drawBall();
-    drawPaddle();
-    collisionDetection();
+    if (!gamePaused) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBricks();
+        drawBall();
+        drawPaddle();
+        collisionDetection();
 
-    // Ball movement logic
-    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = -dx;
-    }
-    if (y + dy < ballRadius) {
-        dy = -dy;
-    } else if (y + dy > canvas.height - ballRadius) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-        } else {
-            document.location.reload();
+        // Ball movement logic
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            dx = -dx;
         }
-    }
+        if (y + dy < ballRadius) {
+            dy = -dy;
+        } else if (y + dy > canvas.height - ballRadius) {
+            if (x > paddleX && x < paddleX + paddleWidth) {
+                dy = -dy;
+            } else {
+                document.location.reload();
+            }
+        }
 
-    x += dx;
-    y += dy;
+        x += dx;
+        y += dy;
+    }
     requestAnimationFrame(draw);
 }
 
-// Open CV section when brick is hit
-function openSection(section) {
+// Pause the game and open CV section when brick is hit
+function pauseGame(section) {
+    gamePaused = true;
     document.getElementById("cv-section").style.display = "block";
     document.getElementById("section-title").textContent = section;
     document.getElementById("section-details").textContent = `Details about ${section}...`; // Placeholder
 }
 
-// Close the zoomed-in CV section
-function closeSection() {
+// Resume the game
+function resumeGame() {
     document.getElementById("cv-section").style.display = "none";
+    gamePaused = false;
 }
+
+// Adjust canvas to full screen, responsive to device size
+function resizeCanvas() {
+    const aspectRatio = window.innerWidth / window.innerHeight;
+    if (aspectRatio > 1) {
+        // 16:9 for landscape (laptops/desktops)
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerWidth / 16 * 9;
+    } else {
+        // 9:16 for portrait (phones)
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    // Reset ball position on resize
+    x = canvas.width / 2;
+    y = canvas.height - 30;
+}
+
+// Event listener to resize canvas based on window size
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas(); // Call once to set initial size
 
 // Start the game
 draw();
 </script>
 </body>
 </html>
+
