@@ -10,12 +10,12 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #f8f9fa, #e9ecef);
-            color: #333;
+            background: linear-gradient(to right, #18392B, #14452F);
+            color: #fff;
         }
 
         header {
-            background-color: #4a90e2;
+            background-color: #18392B;
             color: #fff;
             text-align: center;
             padding: 50px 20px;
@@ -33,23 +33,42 @@
             margin: auto;
             padding: 20px;
             background-color: #fff;
+            color: #333;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             animation: fadeInUp 1.5s ease-in-out;
         }
 
         .profile {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 30px;
         }
 
         .profile img {
             border-radius: 50%;
-            border: 4px solid #4a90e2;
-            width: 150px;
-            height: 150px;
+            border: 4px solid #18392B;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .profile .text {
+            flex: 1;
+        }
+
+        .info {
             margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .info p {
+            margin: 5px 0;
         }
 
         section {
@@ -61,22 +80,10 @@
 
         section h2 {
             font-size: 1.8rem;
-            color: #4a90e2;
+            color: #18392B;
             margin-bottom: 10px;
-            border-bottom: 2px solid #4a90e2;
+            border-bottom: 2px solid #18392B;
             padding-bottom: 5px;
-        }
-
-        .info {
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .info p {
-            margin: 5px 0;
         }
 
         .skills ul, .languages ul, .extracurricular ul, .competitions ul, .research ul {
@@ -87,20 +94,52 @@
         ul li {
             margin: 10px 0;
             padding: 10px;
-            background: #e9ecef;
+            background: #14452F;
             border-radius: 5px;
             transition: transform 0.3s ease, background 0.3s ease;
+            color: #fff;
+            position: relative;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #4a90e2;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position the tooltip above the item */
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
 
         ul li:hover {
             transform: scale(1.05);
             background: #d6d6d6;
+            color: #000;
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            background-color: #4a90e2;
+            background-color: #18392B;
             color: white;
         }
 
@@ -132,7 +171,7 @@
         .button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #4a90e2;
+            background-color: #18392B;
             color: white;
             text-align: center;
             border-radius: 5px;
@@ -152,8 +191,8 @@
             }
 
             .profile img {
-                width: 120px;
-                height: 120px;
+                width: 100px;
+                height: 100px;
             }
 
             section {
@@ -170,27 +209,37 @@
     <div class="container">
         <div class="profile">
             <img src="https://media.licdn.com/dms/image/v2/D4D03AQEwbMYonfie1w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1723395338114?e=1732147200&v=beta&t=-I_0joM4iowXy_4HA3i7KmPpbYwCJmWRL7y2GC4Fh_I" alt="Ibrahim's Photo">
-            <p><strong>Ibrahim Osama</strong></p>
-        </div>
-
-        <section>
-            <h2>Contact Information</h2>
-            <div class="info">
-                <p><strong>Phone:</strong> +20120 573 4644</p>
-                <p><strong>Email:</strong> scientistibrahim2021@gmail.com</p>
-                <p><strong>Location:</strong> 11 Ain Shams, Cairo, Egypt</p>
+            <div class="text">
+                <p><strong>Ibrahim Osama</strong></p>
+                <div class="info">
+                    <p><strong>Phone:</strong> +20120 573 4644</p>
+                    <p><strong>Email:</strong> scientistibrahim2021@gmail.com</p>
+                    <p><strong>Location:</strong> 11 Ain Shams, Cairo, Egypt</p>
+                </div>
             </div>
-        </section>
+        </div>
 
         <section class="skills">
             <h2>Skills</h2>
             <ul>
-                <li>Front End App Developer</li>
-                <li>Scientific Researcher</li>
-                <li>Problem-Solving</li>
-                <li>Critical Thinking</li>
-                <li>Project Management</li>
-                <li>Strong Communication</li>
+                <li class="tooltip">Front End App Developer
+                    <span class="tooltiptext">Developed various web applications with a focus on user experience and performance.</span>
+                </li>
+                <li class="tooltip">Scientific Researcher
+                    <span class="tooltiptext">Conducted research in electrical engineering with a focus on innovative energy solutions.</span>
+                </li>
+                <li class="tooltip">Problem-Solving
+                    <span class="tooltiptext">Skilled in identifying issues and implementing effective solutions across various domains.</span>
+                </li>
+                <li class="tooltip">Critical Thinking
+                    <span class="tooltiptext">Adept at analyzing complex problems and formulating strategic approaches.</span>
+                </li>
+                <li class="tooltip">Project Management
+                    <span class="tooltiptext">Managed multiple projects, ensuring timely completion and quality outcomes.</span>
+                </li>
+                <li class="tooltip">Strong Communication
+                    <span class="tooltiptext">Excellent verbal and written communication skills, capable of conveying complex ideas clearly.</span>
+                </li>
             </ul>
         </section>
 
@@ -208,26 +257,36 @@
         <section class="extracurricular">
             <h2>Extracurricular Activities</h2>
             <ul>
-                <li><strong>Researcher:</strong> Electrical Engineering with Dr. Lofti (Zagazig University)<br>
-                    Invented method to generate electricity from roads using sodium bitartrate; earned Egyptian patent; now working with MOT of Egypt for nationwide use.</li>
-                <li><strong>SpanUP Founder:</strong> Developed attention-enhancing app<br>
-                    Built and led SpanUP; partnered with Cairo University specialists; implemented the program in 3 schools; trained 700+ students.</li>
-                <li><strong>Artist:</strong> Created 150+ portraits<br>
-                    Created artworks using pencil and oil paints; joined 10+ exhibitions; awarded Artist of the Year in 2023.</li>
-                <li><strong>Scout Leader:</strong> Led 80+ Scouters in Egyptian Air Scouts<br>
-                    Organized 50+ training events; led team from 12th to 1st rank in Cairo in 2022; remained 1st in 2023.</li>
-                <li><strong>Innovation Science Tech Scholar:</strong> Media Team Member, Yale Young Global Scholars (YYGS)<br>
-                    Researched MRI mechanism improvements; boosted media account's reach; won billiards tournament; interacted with scholars from 80+ countries.</li>
-                <li><strong>YIRLI Participant:</strong> Yale International Relations Leadership Institute<br>
-                    Modeled solutions for food scarcity; led debates in MUN; represented Norway among 50+ delegates.</li>
-                <li><strong>Participant:</strong> UWC BSF Short Course, United World Colleges (UWC)<br>
-                    Worked on sustainability with 60+ global students; researched renewable energy solutions; presented to experts.</li>
-                <li><strong>Volunteer:</strong> Resala Charity<br>
-                    Committed a full day weekly to uplift elderly visitors and cook for the underprivileged; won 16 times the "Most Committed Volunteer" award.</li>
-                <li><strong>Caregiver:</strong> Providing weekly care for my elderly grandmother<br>
-                    Managed income, medications, and provided mental stimulation through chess to support her battle with Alzheimer’s.</li>
-                <li><strong>Theater/Drama:</strong> Played Edgar in Shakespeare's King Lear<br>
-                    Reprised role for a sold-out 300+ audience; awarded "Best Actor" after 20+ rehearsals and 5+ months of vocal and stage training.</li>
+                <li class="tooltip">Researcher: Electrical Engineering with Dr. Lofti
+                    <span class="tooltiptext">Invented method to generate electricity from roads using sodium bitartrate; earned Egyptian patent; now working with MOT of Egypt for nationwide use.</span>
+                </li>
+                <li class="tooltip">SpanUP Founder
+                    <span class="tooltiptext">Built and led SpanUP; partnered with Cairo University specialists; implemented the program in 3 schools; trained 700+ students.</span>
+                </li>
+                <li class="tooltip">Artist
+                    <span class="tooltiptext">Created artworks using pencil and oil paints; joined 10+ exhibitions; awarded Artist of the Year in 2023.</span>
+                </li>
+                <li class="tooltip">Scout Leader
+                    <span class="tooltiptext">Organized 50+ training events; led team from 12th to 1st rank in Cairo in 2022; remained 1st in 2023.</span>
+                </li>
+                <li class="tooltip">Innovation Science Tech Scholar
+                    <span class="tooltiptext">Researched MRI mechanism improvements; boosted media account's reach; won billiards tournament; interacted with scholars from 80+ countries.</span>
+                </li>
+                <li class="tooltip">YIRLI Participant
+                    <span class="tooltiptext">Modeled solutions for food scarcity; led debates in MUN; represented Norway among 50+ delegates.</span>
+                </li>
+                <li class="tooltip">Participant: UWC BSF Short Course
+                    <span class="tooltiptext">Worked on sustainability with 60+ global students; researched renewable energy solutions; presented to experts.</span>
+                </li>
+                <li class="tooltip">Volunteer: Resala Charity
+                    <span class="tooltiptext">Committed a full day weekly to uplift elderly visitors and cook for the underprivileged; won 16 times the "Most Committed Volunteer" award.</span>
+                </li>
+                <li class="tooltip">Caregiver
+                    <span class="tooltiptext">Managed income, medications, and provided mental stimulation through chess to support her battle with Alzheimer’s.</span>
+                </li>
+                <li class="tooltip">Theater/Drama
+                    <span class="tooltiptext">Played Edgar in Shakespeare's King Lear; awarded "Best Actor" after 20+ rehearsals and 5+ months of vocal and stage training.</span>
+                </li>
             </ul>
         </section>
 
